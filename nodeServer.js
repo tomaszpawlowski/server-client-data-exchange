@@ -12,6 +12,27 @@ http.createServer(function (req, res) {
     }
     else if (req.method === "POST") {
         console.log("request POST")
+        var requestData = '';
+        req.on('data', function (data) {
+            requestData += data;
+        });
+        req.on('end', function () {
+            var postData = (qs.parse(requestData)).pick;
+            console.log(postData);
+
+            if (postData == sesionNumber) {
+                console.log("znaleziono szukana liczbe");
+                tip = ("=");
+            }
+            else if (postData > sesionNumber) {
+                console.log("szukana liczba jest miejsza");
+                tip = ("<")
+            }
+            else {
+                console.log("szukana liczba jest większa");
+                tip = (">")
+            }
+        });
     }
 }).listen(8888, '127.0.0.1');
 console.log('Server running at http://127.0.0.1:8888/');
